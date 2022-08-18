@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/formStyles.css" />
+    <link rel="stylesheet" href="/generalStyles.css" />
+    <link rel="stylesheet" href="/tableStyles.css" />
+    <title>Formuário</title>
+  </head>
+
+  <body id="body">
+    <form action="formulario.html" method="post" id="form">
+      <ul>
+        <li class="nome-li">
+          <label for="nome" class="principais-areas">Nome:</label>
+          <input type="text" id="nome" name="nome" class="witdth-70-per-cent input" required />
+        </li>
+
+        <li class="email-li">
+          <label for="e-mail" class="principais-areas">E-mail:</label>
+          <input type="email" name="e-mail" id="e-mail" class="witdth-70-per-cent input" required />
+        </li>
+
+        <li class="cpf-li">
+          <label for="cpf" class="principais-areas">CPF:</label>
+          <input type="text" name="cpf" id="cpf" maxlength="14" class="witdth-70-per-cent input" required />
+        </li>
+
+        <li class="endereco-li not-flexbox-li">
+          <p class="principais-areas">Endereço:</p>
+          <div class="dados-do-endereço-container">
+            <div class="cidade-container">
+              <label for="cidade" class="padding-left-1rem">Cidade</label>
+              <input type="text" name="cidade" class="witdth-70-per-cent input" id="cidade" />
+            </div>
+            <div class="bairro-container">
+              <label for="bairro" class="padding-left-1rem">Bairro</label>
+              <input type="text" name="bairro" class="witdth-70-per-cent input" id="bairro" />
+            </div>
+            <div class="rua-container">
+              <label for="rua" class="padding-left-1rem">Rua</label>
+              <input type="text" name="rua" class="witdth-70-per-cent input" id="rua" />
+            </div>
+
+            <div class="quadra-lote-casa-numero-cep-uf-container grid-2-columns">
+              <div class="quadra-container min-width-0">
+                <label for="quadra" class="padding-left-1rem">Quadra</label>
+                <input type="text" name="quadra" id="quadra" class="input" maxlength="2" />
+              </div>
+              <div class="lote-container min-width-0">
+                <label for="lote" class="padding-left-1rem">Lote</label>
+                <input type="text" name="lote" id="lote" class="input" maxlength="2" />
+              </div>
+              <div class="casa-container min-width-0">
+                <label for="casa" class="padding-left-1rem">Casa</label>
+                <input type="text" name="casa" id="casa" class="input" maxlength="2" />
+              </div>
+              <div class="numero-container min-width-0">
+                <label for="numero" class="padding-left-1rem">Número</label>
+                <input type="text" name="numero" id="numero" class="input" maxlength="2" />
+              </div>
+              <div class="cep-container min-width-0">
+                <label for="cep" class="padding-left-1rem">CEP</label>
+                <input type="text" name="cep" id="cep" class="input" maxlength="9" />
+              </div>
+              <div class="uf-container min-width-0">
+                <label for="uf" class="padding-left-1rem">UF</label>
+                <select name="uf" id="uf">
+                  <option value=""></option>
+                  <option value="AC">AC</option>
+                  <option value="AL">AL</option>
+                  <option value="AM">AM</option>
+                  <option value="AP">AP</option>
+                  <option value="BA">BA</option>
+                  <option value="CE">CE</option>
+                  <option value="DF">DF</option>
+                  <option value="ES">ES</option>
+                  <option value="GO">GO</option>
+                  <option value="MA">MA</option>
+                  <option value="MG">MG</option>
+                  <option value="MS">MS</option>
+                  <option value="MT">MT</option>
+                  <option value="PA">PA</option>
+                  <option value="PB">PB</option>
+                  <option value="PE">PE</option>
+                  <option value="PI">PI</option>
+                  <option value="PR">PR</option>
+                  <option value="RJ">RJ</option>
+                  <option value="RN">RN</option>
+                  <option value="RO">RO</option>
+                  <option value="RS">RS</option>
+                  <option value="SC">SC</option>
+                  <option value="SE">SE</option>
+                  <option value="SP">SP</option>
+                  <option value="TO">TO</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="escolaridade-li">
+          <label for="escolaridade" class="principais-areas">Escolaridade: </label>
+          <select name="escolaridade" id="escolaridade">
+            <option value="nenhuma-opcao-escolhida">Escolha uma opção</option>
+            <option value="ensino-fundamental">Ensino Fundamental</option>
+            <option value="ensino-medio">Ensino Médio</option>
+            <option value="ensino-superior">Ensino Superior</option>
+          </select>
+        </li>
+
+        <li class="contatos-li not-flexbox-li">
+          <div class="contatos-container">
+            <div class="principais-areas-adicionar-contato-container">
+              <p class="principais-areas">Contatos:</p>
+              <button type="button" id="adicionar-contato">Adicionar Contato</button>
+              <button type="button" id="remover-contato">Remover Contato</button>
+            </div>
+
+            <div id="contato-1">
+              <p id="1°contato" class="nth-contato">Contato 1</p>
+              <div class="contato-nome-container flexbox">
+                <label for="contato-nome" class="padding-left-1rem">Nome</label>
+                <input type="text" name="contato-nome1" id="contato-nome" class="input" />
+              </div>
+              <div class="contato-telefone-container flexbox">
+                <label for="contato-telefone" class="padding-left-1rem">Telefone + DDD</label>
+                <input type="tel" name="contato-telefone1" id="contato-telefone" class="input" maxlength="14" />
+              </div>
+              <div class="contato-email-container flexbox">
+                <label for="contato-email" class="padding-left-1rem">E-mail</label>
+                <input type="email" name="contato-email1" id="contato-email" class="input" />
+              </div>
+            </div>
+
+            <div id="contatos-serao-inseridos-antes-deste-div"></div>
+          </div>
+        </li>
+
+        <li class="submit-li">
+          <button type="submit" class="submit">Enviar Formulário</button>
+        </li>
+      </ul>
+    </form>
+
+    <div class="table">
+      <div class="table-description-container grid-4-columns">
+        <p class="table-description border-right">Nome</p>
+        <p class="table-description border-right">E-mail</p>
+        <p class="table-description border-right">Escolaridade</p>
+        <p class="table-description ações">Ações</p>
+      </div>
+
+      <div class="table-forms-container grid-4-columns">
+        <div class="dados-da-tabela-serao-inseridos-antes-deste-div"></div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+    <script src="/FileSaver.js-master/FileSaver.js-master/src/FileSaver.js"></script>
+  </body>
+</html>
