@@ -134,7 +134,7 @@ submitBtn.addEventListener('click', function (e) {
     }
 
     //criando objeto com todos os dados informados no formulário
-    const obj1 = {
+    dadosDoFormularioObj[quantidadeDeFormulariosEnviados] = {
       nome: formData.get('nome'),
       email: formData.get('e-mail'),
       cpf: formData.get('cpf'),
@@ -150,7 +150,6 @@ submitBtn.addEventListener('click', function (e) {
       uf: formData.get('uf'),
       escolaridade: formData.get('escolaridade')
     };
-    dadosDoFormularioObj[quantidadeDeFormulariosEnviados] = obj1;
     //armazenando os contatos
     for (let i = 1; i <= quantidadeDeContatos; i++) {
       dadosDoFormularioObj[quantidadeDeFormulariosEnviados][`nomeContato${i}`] = formData.get(`contato-nome${i}`);
@@ -159,7 +158,6 @@ submitBtn.addEventListener('click', function (e) {
       );
       dadosDoFormularioObj[quantidadeDeFormulariosEnviados][`emailContato${i}`] = formData.get(`contato-email${i}`);
     }
-    console.log(dadosDoFormularioObj);
     quantidadeDeFormulariosEnviados++;
 
     //resetando o formulário pra que um novo seja preenchido
@@ -178,22 +176,18 @@ function adicionarNaTabela() {
   let escolaridadeAserAdicionado = document.createElement('div');
   let botoesAserAdicionado = document.createElement('div');
 
-  nomeAserAdicionado.setAttribute('class', 'table-item nome border-right border-top');
-  nomeAserAdicionado.setAttribute('id', `${quantidadeDeFormulariosNaTabela}`);
+  nomeAserAdicionado.setAttribute('class', `table-item nome border-right border-top ${quantidadeDeFormulariosNaTabela}`);
   nomeAserAdicionado.textContent = String(dadosDoFormularioObj[quantidadeDeFormulariosEnviados - 1].nome);
-  emailAserAdicionado.setAttribute('class', 'table-item email border-right border-top');
-  emailAserAdicionado.setAttribute('id', `${quantidadeDeFormulariosNaTabela}`);
+  emailAserAdicionado.setAttribute('class', `table-item email border-right border-top ${quantidadeDeFormulariosNaTabela}`);
   emailAserAdicionado.textContent = String(dadosDoFormularioObj[quantidadeDeFormulariosEnviados - 1].email);
-  escolaridadeAserAdicionado.setAttribute('class', 'table-item escolaridade border-right border-top');
-  escolaridadeAserAdicionado.setAttribute('id', `${quantidadeDeFormulariosNaTabela}`);
+  escolaridadeAserAdicionado.setAttribute('class', `table-item escolaridade border-right border-top ${quantidadeDeFormulariosNaTabela}`);
   escolaridadeAserAdicionado.textContent = String(
     dadosDoFormularioObj[quantidadeDeFormulariosEnviados - 1].escolaridade
   );
-  botoesAserAdicionado.setAttribute('class', 'table-item ações border-top');
-  botoesAserAdicionado.setAttribute('id', `${quantidadeDeFormulariosNaTabela}`);
+  botoesAserAdicionado.setAttribute('class', `table-item ações border-top ${quantidadeDeFormulariosNaTabela}`);
   botoesAserAdicionado.innerHTML = `
-        <button class="editar ações-btn">Editar</button>
-        <button class="excluir ações-btn">Excluir</button>
+        <button class="editar ações-btn" id="${quantidadeDeFormulariosNaTabela}">Editar</button>
+        <button class="excluir ações-btn" id="${quantidadeDeFormulariosNaTabela}">Excluir</button>
   `;
   let divReferenciaInsercao = document.querySelector('.dados-da-tabela-serao-inseridos-antes-deste-div');
   divReferenciaInsercao.before(nomeAserAdicionado);
@@ -266,7 +260,14 @@ removerContatoBtn.addEventListener('click', function () {
 });
 
 //excluir dados da tabela
-let excluirBtn = document.querySelector('.excluir');
-excluirBtn.addEventListener('click', function (e) {
-  e.preventDefault();
-});
+
+if(quantidadeDeFormulariosEnviados>=1){
+  let excluirBtn = document.querySelectorAll('.excluir');
+  console.log(excluirBtn)
+  excluirBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelectorAll(`.${excluirBtn.id}`).remove();
+  });
+}
+
+//while(true){}
