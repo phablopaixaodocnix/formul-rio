@@ -3,6 +3,7 @@
   width: 60%;
   max-height: 0;
   margin-right: 1rem;
+  min-width: 0;
 }
 
 .border-right {

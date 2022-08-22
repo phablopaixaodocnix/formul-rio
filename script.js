@@ -16,12 +16,20 @@ function permitir_apenas_numeros_e_backspace_em_um_input(input) {
   });
 }
 
+let nomeInput = document.getElementById('nome');
+let emailInput = document.getElementById('e-mail');
+let cidadeInput = document.getElementById('cidade');
+let bairroInput = document.getElementById('bairro');
+let ruaInput = document.getElementById('rua');
+
+let ufSelect = document.getElementById('uf');
+let escolaridadeSelect = document.getElementById('escolaridade');
 let cpfInput = document.getElementById('cpf');
 let quadraInput = document.getElementById('quadra');
 let loteInput = document.getElementById('lote');
 let casaInput = document.getElementById('casa');
 let numeroInput = document.getElementById('numero');
-let contatoTelefoneInput = document.getElementById('contato-telefone');
+let contatoTelefoneInput = document.getElementById('contato-telefone1');
 let cepInput = document.getElementById('cep');
 let allInputs = document.querySelectorAll('.input');
 let form = document.getElementById('form');
@@ -138,7 +146,6 @@ submitBtn.addEventListener('click', function (e) {
       nome: formData.get('nome'),
       email: formData.get('e-mail'),
       cpf: formData.get('cpf'),
-      endereço: formData.get('e-mail'),
       cidade: formData.get('cidade'),
       bairro: formData.get('bairro'),
       rua: formData.get('rua'),
@@ -151,20 +158,83 @@ submitBtn.addEventListener('click', function (e) {
       escolaridade: formData.get('escolaridade')
     };
     //armazenando os contatos
-    for (let i = 1; i <= quantidadeDeContatos; i++) {
-      dadosDoFormularioObj[quantidadeDeFormulariosEnviados][`nomeContato${i}`] = formData.get(`contato-nome${i}`);
-      dadosDoFormularioObj[quantidadeDeFormulariosEnviados][`telefoneContato${i}`] = formData.get(
-        `contato-telefone${i}`
+    let k = 1;
+    for (; k <= quantidadeDeContatos; k++) {
+      dadosDoFormularioObj[quantidadeDeFormulariosEnviados][`nomeContato${k}`] = formData.get(`contato-nome${k}`);
+      dadosDoFormularioObj[quantidadeDeFormulariosEnviados][`telefoneContato${k}`] = formData.get(
+        `contato-telefone${k}`
       );
-      dadosDoFormularioObj[quantidadeDeFormulariosEnviados][`emailContato${i}`] = formData.get(`contato-email${i}`);
+      dadosDoFormularioObj[quantidadeDeFormulariosEnviados][`emailContato${k}`] = formData.get(`contato-email${k}`);
     }
+    dadosDoFormularioObj[quantidadeDeFormulariosEnviados].quantidadeDeContatosNesteFormulario = k - 1;
     quantidadeDeFormulariosEnviados++;
 
     //resetando o formulário pra que um novo seja preenchido
     form.reset();
+    if (quantidadeDeContatos > 1) {
+      for (let i = 2; i <= quantidadeDeContatos; i++) {
+        let removerContato = document.getElementById(`contato-${i}`);
+        removerContato.remove();
+      }
+      quantidadeDeContatos = 1;
+    }
 
     //adicionando alguns dos dados informados na tabela
     adicionarNaTabela();
+
+    //remover dados da tabela
+    let excluirBtn = document.querySelectorAll('.excluir');
+    for (let i = 0; i < excluirBtn.length; i++) {
+      excluirBtn[i].addEventListener('click', function () {
+        let remover = document.querySelectorAll(`.ref${excluirBtn[i].id}`);
+        remover[0].remove();
+        remover[1].remove();
+        remover[2].remove();
+        remover[3].remove();
+        dadosDoFormularioObj[excluirBtn[i].id - 1].pop;
+      });
+    }
+
+    //editar dados da tabela
+    let editarBtn = document.querySelectorAll('.editar');
+    for (let i = 0; i < editarBtn.length; i++) {
+      editarBtn[i].addEventListener('click', function () {
+        let remover = document.querySelectorAll(`.ref${editarBtn[i].id}`);
+        remover[0].remove();
+        remover[1].remove();
+        remover[2].remove();
+        remover[3].remove();
+
+        nomeInput.value = dadosDoFormularioObj[i].nome;
+        emailInput.value = dadosDoFormularioObj[i].email;
+        cpfInput.value = dadosDoFormularioObj[i].cpf;
+        cidadeInput.value = dadosDoFormularioObj[i].cidade;
+        bairroInput.value = dadosDoFormularioObj[i].bairro;
+        ruaInput.value = dadosDoFormularioObj[i].rua;
+        quadraInput.value = dadosDoFormularioObj[i].quadra;
+        loteInput.value = dadosDoFormularioObj[i].lote;
+        casaInput.value = dadosDoFormularioObj[i].casa;
+        numeroInput.value = dadosDoFormularioObj[i].numero;
+        cepInput.value = dadosDoFormularioObj[i].cep;
+        ufSelect.value = dadosDoFormularioObj[i].uf;
+        escolaridadeSelect.value = dadosDoFormularioObj[i].escolaridade;
+        let j = dadosDoFormularioObj[i].quantidadeDeContatosNesteFormulario;
+        for (let k = 1; k < j; k++) {
+          adicionarContatoBtn.click();
+        }
+        for (let p = 1; p <= j; p++) {
+          let contatoNome = document.getElementById(`contato-nome${p}`);
+          let contatoTelefone = document.getElementById(`contato-telefone${p}`);
+          let contatoEmail = document.getElementById(`contato-email${p}`);
+          console.log(dadosDoFormularioObj[i]);
+          contatoNome.value = dadosDoFormularioObj[i][`nomeContato${p}`];
+          contatoTelefone.value = dadosDoFormularioObj[i][`telefoneContato${p}`];
+          contatoEmail.value = dadosDoFormularioObj[i][`emailContato${p}`];
+        }
+        dadosDoFormularioObj.splice(i, 1);
+        //quantidadeDeFormulariosEnviados--;
+      });
+    }
   }
 });
 
@@ -176,15 +246,24 @@ function adicionarNaTabela() {
   let escolaridadeAserAdicionado = document.createElement('div');
   let botoesAserAdicionado = document.createElement('div');
 
-  nomeAserAdicionado.setAttribute('class', `table-item nome border-right border-top ${quantidadeDeFormulariosNaTabela}`);
+  nomeAserAdicionado.setAttribute(
+    'class',
+    `table-item nome border-right border-top ref${quantidadeDeFormulariosNaTabela}`
+  );
   nomeAserAdicionado.textContent = String(dadosDoFormularioObj[quantidadeDeFormulariosEnviados - 1].nome);
-  emailAserAdicionado.setAttribute('class', `table-item email border-right border-top ${quantidadeDeFormulariosNaTabela}`);
+  emailAserAdicionado.setAttribute(
+    'class',
+    `table-item email border-right border-top ref${quantidadeDeFormulariosNaTabela}`
+  );
   emailAserAdicionado.textContent = String(dadosDoFormularioObj[quantidadeDeFormulariosEnviados - 1].email);
-  escolaridadeAserAdicionado.setAttribute('class', `table-item escolaridade border-right border-top ${quantidadeDeFormulariosNaTabela}`);
+  escolaridadeAserAdicionado.setAttribute(
+    'class',
+    `table-item escolaridade border-right border-top ref${quantidadeDeFormulariosNaTabela}`
+  );
   escolaridadeAserAdicionado.textContent = String(
     dadosDoFormularioObj[quantidadeDeFormulariosEnviados - 1].escolaridade
   );
-  botoesAserAdicionado.setAttribute('class', `table-item ações border-top ${quantidadeDeFormulariosNaTabela}`);
+  botoesAserAdicionado.setAttribute('class', `table-item ações border-top ref${quantidadeDeFormulariosNaTabela}`);
   botoesAserAdicionado.innerHTML = `
         <button class="editar ações-btn" id="${quantidadeDeFormulariosNaTabela}">Editar</button>
         <button class="excluir ações-btn" id="${quantidadeDeFormulariosNaTabela}">Excluir</button>
@@ -215,26 +294,25 @@ function criarContato() {
   const node = `<p id="${quantidadeDeContatos}°contato" class="nth-contato">Contato ${quantidadeDeContatos} </p>
     <div class="contato-nome-container flexbox">
       <label for="contato-nome" class="padding-left-1rem">Nome</label>
-      <input type="text" name="contato-nome${quantidadeDeContatos}" id="contato-nome" class="input" />
+      <input type="text" name="contato-nome${quantidadeDeContatos}" id="contato-nome${quantidadeDeContatos}" class="input" />
       </div>
     <div class="contato-telefone-container flexbox">
     <label for="contato-telefone" class="padding-left-1rem"
         >Telefone + DDD</label
       >
       <input
-        type="tel" name="contato-telefone${quantidadeDeContatos}" id="contato-telefone" class="input" maxlength="14"
+        type="tel" name="contato-telefone${quantidadeDeContatos}" id="contato-telefone${quantidadeDeContatos}" class="input" maxlength="14"
       />
     </div>
     <div class="contato-email-container flexbox">
       <label for="contato-email" class="padding-left-1rem"
         >E-mail</label
       >
-      <input type="email" name="contato-email${quantidadeDeContatos}" id="contato-email" class="input" />
+      <input type="email" name="contato-email${quantidadeDeContatos}" id="contato-email${quantidadeDeContatos}" class="input" />
     </div>
     `;
   contatoAserAdicionado.innerHTML = node;
 
-  console.log(contatoAserAdicionado);
   return contatoAserAdicionado;
 }
 
@@ -261,13 +339,11 @@ removerContatoBtn.addEventListener('click', function () {
 
 //excluir dados da tabela
 
-if(quantidadeDeFormulariosEnviados>=1){
-  let excluirBtn = document.querySelectorAll('.excluir');
-  console.log(excluirBtn)
-  excluirBtn.addEventListener('click', function (e) {
-    e.preventDefault();
-    document.querySelectorAll(`.${excluirBtn.id}`).remove();
-  });
-}
+// let excluirBtn = document.querySelectorAll('.excluir');
+// console.log(excluirBtn);
+// excluirBtn.addEventListener('click', function (e) {
+//   e.preventDefault();
+//   document.querySelectorAll(`.${excluirBtn.id}`).remove();
+// });
 
 //while(true){}
