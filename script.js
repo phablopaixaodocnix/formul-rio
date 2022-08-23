@@ -186,12 +186,25 @@ submitBtn.addEventListener('click', function (e) {
     let excluirBtn = document.querySelectorAll('.excluir');
     for (let i = 0; i < excluirBtn.length; i++) {
       excluirBtn[i].addEventListener('click', function () {
-        let remover = document.querySelectorAll(`.ref${excluirBtn[i].id}`);
+        let remover = document.querySelectorAll(`.ref${i + 1}`);
         remover[0].remove();
         remover[1].remove();
         remover[2].remove();
         remover[3].remove();
+        let itensTabela = document.querySelectorAll('.table-item');
+
+        // let decrementar = [];
+        // decrementar = tabela.childNodes;
+        // for (let a = i - 1; a >= 0; a--) {
+        //   decrementar.splice(a, 1);
+        // }
+        // for (let a = 0; a < decrementar.length; a++) {
+        //   decrementar[a].classList.replace(`ref${i + 1}`, `ref${i}`);
+        // }
+        //for (let w = i * 4 + 4, x = 0; w < quantidadeDeFormulariosNaTabela * 4; w++, x++) {}
         dadosDoFormularioObj[excluirBtn[i].id - 1].pop;
+        quantidadeDeFormulariosNaTabela--;
+        quantidadeDeFormulariosEnviados--;
       });
     }
 
@@ -226,13 +239,15 @@ submitBtn.addEventListener('click', function (e) {
           let contatoNome = document.getElementById(`contato-nome${p}`);
           let contatoTelefone = document.getElementById(`contato-telefone${p}`);
           let contatoEmail = document.getElementById(`contato-email${p}`);
-          console.log(dadosDoFormularioObj[i]);
           contatoNome.value = dadosDoFormularioObj[i][`nomeContato${p}`];
           contatoTelefone.value = dadosDoFormularioObj[i][`telefoneContato${p}`];
           contatoEmail.value = dadosDoFormularioObj[i][`emailContato${p}`];
         }
+        console.log(dadosDoFormularioObj);
         dadosDoFormularioObj.splice(i, 1);
-        //quantidadeDeFormulariosEnviados--;
+        console.log(dadosDoFormularioObj);
+        quantidadeDeFormulariosEnviados--;
+        quantidadeDeFormulariosNaTabela--;
       });
     }
   }
