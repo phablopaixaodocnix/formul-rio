@@ -107,9 +107,10 @@ let quantidadeDeFormulariosNaTabela = 0;
 submitBtn.addEventListener('click', function (e) {
   e.preventDefault();
   let formData = new FormData(form);
-  if (quantidadeDeContatos < 2) {
-    alert('Informe pelo ao menos 2 contatos');
-  } else if (cpfIsValid(formData.get('cpf'))) {
+  // if (quantidadeDeContatos < 2) {
+  //   alert('Informe pelo ao menos 2 contatos');
+  // } else
+  if (/*cpfIsValid(formData.get('cpf'))*/ true) {
     //criando a string a ser armazenada na variável dadosDoFormulário
     dadosDoFormularioStr = `Nome: ${formData.get('nome')}
     E-mail: ${formData.get('e-mail')}
@@ -186,23 +187,22 @@ submitBtn.addEventListener('click', function (e) {
     let excluirBtn = document.querySelectorAll('.excluir');
     for (let i = 0; i < excluirBtn.length; i++) {
       excluirBtn[i].addEventListener('click', function () {
+        console.log(i);
         let remover = document.querySelectorAll(`.ref${i + 1}`);
         remover[0].remove();
         remover[1].remove();
         remover[2].remove();
         remover[3].remove();
-        let itensTabela = document.querySelectorAll('.table-item');
 
-        // let decrementar = [];
-        // decrementar = tabela.childNodes;
-        // for (let a = i - 1; a >= 0; a--) {
-        //   decrementar.splice(a, 1);
-        // }
-        // for (let a = 0; a < decrementar.length; a++) {
-        //   decrementar[a].classList.replace(`ref${i + 1}`, `ref${i}`);
-        // }
-        //for (let w = i * 4 + 4, x = 0; w < quantidadeDeFormulariosNaTabela * 4; w++, x++) {}
-        dadosDoFormularioObj[excluirBtn[i].id - 1].pop;
+        let itensTabela = document.querySelectorAll('.table-item');
+        for (let w = i * 4; w < itensTabela.length; w++) {
+          let classes = itensTabela[w].className;
+          let numeroReferencia = classes.match(/(\d+)/)[0];
+          itensTabela[w].classList.remove(`ref${numeroReferencia}`);
+          itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
+        }
+
+        dadosDoFormularioObj[i].pop;
         quantidadeDeFormulariosNaTabela--;
         quantidadeDeFormulariosEnviados--;
       });
