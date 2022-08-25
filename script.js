@@ -103,6 +103,7 @@ let dadosDoFormularioStr;
 let dadosDoFormularioObj = []; //vetor onde será armazenado objetos que contém os dados informados no formulário;
 let quantidadeDeFormulariosEnviados = 0;
 let quantidadeDeFormulariosNaTabela = 0;
+let execultado = 5;
 
 submitBtn.addEventListener('click', function (e) {
   e.preventDefault();
@@ -185,28 +186,43 @@ submitBtn.addEventListener('click', function (e) {
 
     //remover dados da tabela
     let excluirBtn = document.querySelectorAll('.excluir');
+    let excluirBtnLength = excluirBtn.length;
     for (let i = 0; i < excluirBtn.length; i++) {
       excluirBtn[i].addEventListener('click', function () {
-        console.log(i);
-        let remover = document.querySelectorAll(`.ref${i + 1}`);
-        remover[0].remove();
-        remover[1].remove();
-        remover[2].remove();
-        remover[3].remove();
+        console.log(execultado);
+        if (execultado === 5) {
+          console.log(execultado);
+          let remover = document.querySelectorAll(`.ref${i + 1}`);
+          remover[0].remove();
+          remover[1].remove();
+          remover[2].remove();
+          remover[3].remove();
+          execultado = 12382;
 
-        let itensTabela = document.querySelectorAll('.table-item');
-        for (let w = i * 4; w < itensTabela.length; w++) {
-          let classes = itensTabela[w].className;
-          let numeroReferencia = classes.match(/(\d+)/)[0];
-          itensTabela[w].classList.remove(`ref${numeroReferencia}`);
-          itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
+          dadosDoFormularioObj[i].pop;
+          quantidadeDeFormulariosNaTabela--;
+          quantidadeDeFormulariosEnviados--;
+
+          let itensTabela = document.querySelectorAll('.table-item');
+          for (let w = i * 4; w < itensTabela.length; w++) {
+            let classes = itensTabela[w].className;
+            let numeroReferencia = classes.match(/(\d+)/)[0];
+            itensTabela[w].classList.remove(`ref${numeroReferencia}`);
+            itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
+          }
         }
-
-        dadosDoFormularioObj[i].pop;
-        quantidadeDeFormulariosNaTabela--;
-        quantidadeDeFormulariosEnviados--;
       });
     }
+    // if (execultado != -1) {
+    //   console.log('deu');
+    //   let itensTabela = document.querySelectorAll('.table-item');
+    //   for (let w = execultado * 4; w < itensTabela.length; w++) {
+    //     let classes = itensTabela[w].className;
+    //     let numeroReferencia = classes.match(/(\d+)/)[0];
+    //     itensTabela[w].classList.remove(`ref${numeroReferencia}`);
+    //     itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
+    //   }
+    // }
 
     //editar dados da tabela
     let editarBtn = document.querySelectorAll('.editar');
