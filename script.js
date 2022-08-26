@@ -103,7 +103,8 @@ let dadosDoFormularioStr;
 let dadosDoFormularioObj = []; //vetor onde será armazenado objetos que contém os dados informados no formulário;
 let quantidadeDeFormulariosEnviados = 0;
 let quantidadeDeFormulariosNaTabela = 0;
-let execultado = 5;
+let eventListenerExcluir = 0;
+let eventListenerEditar = 0;
 
 submitBtn.addEventListener('click', function (e) {
   e.preventDefault();
@@ -187,85 +188,85 @@ submitBtn.addEventListener('click', function (e) {
     //remover dados da tabela
     let excluirBtn = document.querySelectorAll('.excluir');
     let excluirBtnLength = excluirBtn.length;
-    for (let i = 0; i < excluirBtn.length; i++) {
-      excluirBtn[i].addEventListener('click', function () {
-        console.log(execultado);
-        if (execultado === 5) {
-          console.log(execultado);
-          let remover = document.querySelectorAll(`.ref${i + 1}`);
-          remover[0].remove();
-          remover[1].remove();
-          remover[2].remove();
-          remover[3].remove();
-          execultado = 12382;
+    eventListenerEditar++;
+    eventListenerExcluir++;
 
-          dadosDoFormularioObj[i].pop;
-          quantidadeDeFormulariosNaTabela--;
-          quantidadeDeFormulariosEnviados--;
+    const funçãoRemover = function () {
+      let i = eventListenerExcluir;
+      eventListenerExcluir--;
+      let remover = document.querySelectorAll(`.ref${i}`);
+      console.log(remover);
+      remover[0].remove();
+      remover[1].remove();
+      remover[2].remove();
+      remover[3].remove();
 
-          let itensTabela = document.querySelectorAll('.table-item');
-          for (let w = i * 4; w < itensTabela.length; w++) {
-            let classes = itensTabela[w].className;
-            let numeroReferencia = classes.match(/(\d+)/)[0];
-            itensTabela[w].classList.remove(`ref${numeroReferencia}`);
-            itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
-          }
-        }
-      });
-    }
-    // if (execultado != -1) {
-    //   console.log('deu');
-    //   let itensTabela = document.querySelectorAll('.table-item');
-    //   for (let w = execultado * 4; w < itensTabela.length; w++) {
-    //     let classes = itensTabela[w].className;
-    //     let numeroReferencia = classes.match(/(\d+)/)[0];
-    //     itensTabela[w].classList.remove(`ref${numeroReferencia}`);
-    //     itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
-    //   }
-    // }
+      dadosDoFormularioObj[i - 1].pop;
+      quantidadeDeFormulariosNaTabela--;
+      quantidadeDeFormulariosEnviados--;
+
+      let itensTabela = document.querySelectorAll('.table-item');
+      for (let w = i * 4 - 4; w < itensTabela.length; w++) {
+        let classes = itensTabela[w].className;
+        let numeroReferencia = classes.match(/(\d+)/)[0];
+        itensTabela[w].classList.remove(`ref${numeroReferencia}`);
+        itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
+      }
+      excluirBtn[excluirBtn.length - 1].removeEventListener('click', funçãoRemover);
+    };
+    excluirBtn[excluirBtn.length - 1].addEventListener('click', funçãoRemover);
 
     //editar dados da tabela
     let editarBtn = document.querySelectorAll('.editar');
-    for (let i = 0; i < editarBtn.length; i++) {
-      editarBtn[i].addEventListener('click', function () {
-        let remover = document.querySelectorAll(`.ref${editarBtn[i].id}`);
-        remover[0].remove();
-        remover[1].remove();
-        remover[2].remove();
-        remover[3].remove();
+    const funçãoEditar = function () {
+      eventListenerEditar--;
+      let i = eventListenerEditar;
+      let remover = document.querySelectorAll(`.ref${i}`);
+      console.log(remover);
+      remover[0].remove();
+      remover[1].remove();
+      remover[2].remove();
+      remover[3].remove();
 
-        nomeInput.value = dadosDoFormularioObj[i].nome;
-        emailInput.value = dadosDoFormularioObj[i].email;
-        cpfInput.value = dadosDoFormularioObj[i].cpf;
-        cidadeInput.value = dadosDoFormularioObj[i].cidade;
-        bairroInput.value = dadosDoFormularioObj[i].bairro;
-        ruaInput.value = dadosDoFormularioObj[i].rua;
-        quadraInput.value = dadosDoFormularioObj[i].quadra;
-        loteInput.value = dadosDoFormularioObj[i].lote;
-        casaInput.value = dadosDoFormularioObj[i].casa;
-        numeroInput.value = dadosDoFormularioObj[i].numero;
-        cepInput.value = dadosDoFormularioObj[i].cep;
-        ufSelect.value = dadosDoFormularioObj[i].uf;
-        escolaridadeSelect.value = dadosDoFormularioObj[i].escolaridade;
-        let j = dadosDoFormularioObj[i].quantidadeDeContatosNesteFormulario;
-        for (let k = 1; k < j; k++) {
-          adicionarContatoBtn.click();
-        }
-        for (let p = 1; p <= j; p++) {
-          let contatoNome = document.getElementById(`contato-nome${p}`);
-          let contatoTelefone = document.getElementById(`contato-telefone${p}`);
-          let contatoEmail = document.getElementById(`contato-email${p}`);
-          contatoNome.value = dadosDoFormularioObj[i][`nomeContato${p}`];
-          contatoTelefone.value = dadosDoFormularioObj[i][`telefoneContato${p}`];
-          contatoEmail.value = dadosDoFormularioObj[i][`emailContato${p}`];
-        }
-        console.log(dadosDoFormularioObj);
-        dadosDoFormularioObj.splice(i, 1);
-        console.log(dadosDoFormularioObj);
-        quantidadeDeFormulariosEnviados--;
-        quantidadeDeFormulariosNaTabela--;
-      });
-    }
+      nomeInput.value = dadosDoFormularioObj[i].nome;
+      emailInput.value = dadosDoFormularioObj[i].email;
+      cpfInput.value = dadosDoFormularioObj[i].cpf;
+      cidadeInput.value = dadosDoFormularioObj[i].cidade;
+      bairroInput.value = dadosDoFormularioObj[i].bairro;
+      ruaInput.value = dadosDoFormularioObj[i].rua;
+      quadraInput.value = dadosDoFormularioObj[i].quadra;
+      loteInput.value = dadosDoFormularioObj[i].lote;
+      casaInput.value = dadosDoFormularioObj[i].casa;
+      numeroInput.value = dadosDoFormularioObj[i].numero;
+      cepInput.value = dadosDoFormularioObj[i].cep;
+      ufSelect.value = dadosDoFormularioObj[i].uf;
+      escolaridadeSelect.value = dadosDoFormularioObj[i].escolaridade;
+      let j = dadosDoFormularioObj[i].quantidadeDeContatosNesteFormulario;
+      for (let k = 1; k < j; k++) {
+        adicionarContatoBtn.click();
+      }
+      for (let p = 1; p <= j; p++) {
+        let contatoNome = document.getElementById(`contato-nome${p}`);
+        let contatoTelefone = document.getElementById(`contato-telefone${p}`);
+        let contatoEmail = document.getElementById(`contato-email${p}`);
+        contatoNome.value = dadosDoFormularioObj[i][`nomeContato${p}`];
+        contatoTelefone.value = dadosDoFormularioObj[i][`telefoneContato${p}`];
+        contatoEmail.value = dadosDoFormularioObj[i][`emailContato${p}`];
+      }
+      dadosDoFormularioObj.splice(i, 1);
+      quantidadeDeFormulariosEnviados--;
+      quantidadeDeFormulariosNaTabela--;
+
+      let itensTabela = document.querySelectorAll('.table-item');
+      for (let w = i * 4; w < itensTabela.length; w++) {
+        let classes = itensTabela[w].className;
+        let numeroReferencia = classes.match(/(\d+)/)[0];
+        itensTabela[w].classList.remove(`ref${numeroReferencia}`);
+        itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
+      }
+      editarBtn[editarBtn.length - 1].removeEventListener('click', funçãoEditar);
+    };
+    editarBtn[editarBtn.length - 1].addEventListener('click', funçãoEditar);
   }
 });
 
