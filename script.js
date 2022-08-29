@@ -111,10 +111,9 @@ let eventListenerEditar = 0;
 submitBtn.addEventListener('click', function (e) {
   e.preventDefault();
   let formData = new FormData(form);
-  // if (quantidadeDeContatos < 2) {
-  //   alert('Informe pelo ao menos 2 contatos');
-  // } else
-  if (/*cpfIsValid(formData.get('cpf'))*/ true) {
+  if (quantidadeDeContatos < 2) {
+    alert('Informe pelo ao menos 2 contatos');
+  } else if (cpfIsValid(formData.get('cpf'))) {
     //criando a string a ser armazenada na variável dadosDoFormulário
     dadosDoFormularioStr = `Nome: ${formData.get('nome')}
     E-mail: ${formData.get('e-mail')}
