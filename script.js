@@ -74,7 +74,7 @@ function cpfIsValid(cpf) {
       return false;
     }
 
-    for (i = 1; i <= 9; i++) Soma = Soma + parseInt(cpfApenasNumeros.substring(i - 1, i)) * (11 - i);
+    for (let i = 1; i <= 9; i++) Soma = Soma + parseInt(cpfApenasNumeros.substring(i - 1, i)) * (11 - i);
     Resto = (Soma * 10) % 11;
 
     if (Resto == 10 || Resto == 11) Resto = 0;
@@ -84,7 +84,7 @@ function cpfIsValid(cpf) {
     }
 
     Soma = 0;
-    for (i = 1; i <= 10; i++) Soma = Soma + parseInt(cpfApenasNumeros.substring(i - 1, i)) * (12 - i);
+    for (let i = 1; i <= 10; i++) Soma = Soma + parseInt(cpfApenasNumeros.substring(i - 1, i)) * (12 - i);
     Resto = (Soma * 10) % 11;
 
     if (Resto == 10 || Resto == 11) Resto = 0;
