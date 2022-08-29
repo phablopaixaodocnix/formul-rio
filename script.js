@@ -1,3 +1,5 @@
+'use strict';
+
 //FUNÇÕES REULTILIZÁVEIS
 let quantidadeDeContatos = 1;
 function permitir_apenas_numeros_e_backspace_em_um_input(input) {
@@ -185,17 +187,17 @@ submitBtn.addEventListener('click', function (e) {
     //adicionando alguns dos dados informados na tabela
     adicionarNaTabela();
 
-    //remover dados da tabela
+    //remover e editar dados da tabela
     let excluirBtn = document.querySelectorAll('.excluir');
+    let editarBtn = document.querySelectorAll('.editar');
     let excluirBtnLength = excluirBtn.length;
     eventListenerEditar++;
     eventListenerExcluir++;
 
-    const funçãoRemover = function () {
-      let i = eventListenerExcluir;
+    const funçãoRemover = function (e) {
       eventListenerExcluir--;
+      let i = Number(e.target.id);
       let remover = document.querySelectorAll(`.ref${i}`);
-      console.log(remover);
       remover[0].remove();
       remover[1].remove();
       remover[2].remove();
@@ -206,42 +208,46 @@ submitBtn.addEventListener('click', function (e) {
       quantidadeDeFormulariosEnviados--;
 
       let itensTabela = document.querySelectorAll('.table-item');
-      for (let w = i * 4 - 4; w < itensTabela.length; w++) {
+      for (let w = i * 4 - 4, k = 1; w < itensTabela.length; w++, k++) {
         let classes = itensTabela[w].className;
         let numeroReferencia = classes.match(/(\d+)/)[0];
         itensTabela[w].classList.remove(`ref${numeroReferencia}`);
         itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
+        if (k === 4) {
+          k = 0;
+          itensTabela[w].innerHTML = `
+          <button class="editar ações-btn" id="${numeroReferencia - 1}">Editar</button>
+          <button class="excluir ações-btn" id="${numeroReferencia - 1}">Excluir</button>
+          `;
+        }
       }
-      excluirBtn[excluirBtn.length - 1].removeEventListener('click', funçãoRemover);
-    };
-    excluirBtn[excluirBtn.length - 1].addEventListener('click', funçãoRemover);
 
-    //editar dados da tabela
-    let editarBtn = document.querySelectorAll('.editar');
-    const funçãoEditar = function () {
+      recolocarEventListeners(i);
+    };
+
+    const funçãoEditar = function (e) {
       eventListenerEditar--;
-      let i = eventListenerEditar;
+      let i = e.target.id;
       let remover = document.querySelectorAll(`.ref${i}`);
-      console.log(remover);
       remover[0].remove();
       remover[1].remove();
       remover[2].remove();
       remover[3].remove();
 
-      nomeInput.value = dadosDoFormularioObj[i].nome;
-      emailInput.value = dadosDoFormularioObj[i].email;
-      cpfInput.value = dadosDoFormularioObj[i].cpf;
-      cidadeInput.value = dadosDoFormularioObj[i].cidade;
-      bairroInput.value = dadosDoFormularioObj[i].bairro;
-      ruaInput.value = dadosDoFormularioObj[i].rua;
-      quadraInput.value = dadosDoFormularioObj[i].quadra;
-      loteInput.value = dadosDoFormularioObj[i].lote;
-      casaInput.value = dadosDoFormularioObj[i].casa;
-      numeroInput.value = dadosDoFormularioObj[i].numero;
-      cepInput.value = dadosDoFormularioObj[i].cep;
-      ufSelect.value = dadosDoFormularioObj[i].uf;
-      escolaridadeSelect.value = dadosDoFormularioObj[i].escolaridade;
-      let j = dadosDoFormularioObj[i].quantidadeDeContatosNesteFormulario;
+      nomeInput.value = dadosDoFormularioObj[i - 1].nome;
+      emailInput.value = dadosDoFormularioObj[i - 1].email;
+      cpfInput.value = dadosDoFormularioObj[i - 1].cpf;
+      cidadeInput.value = dadosDoFormularioObj[i - 1].cidade;
+      bairroInput.value = dadosDoFormularioObj[i - 1].bairro;
+      ruaInput.value = dadosDoFormularioObj[i - 1].rua;
+      quadraInput.value = dadosDoFormularioObj[i - 1].quadra;
+      loteInput.value = dadosDoFormularioObj[i - 1].lote;
+      casaInput.value = dadosDoFormularioObj[i - 1].casa;
+      numeroInput.value = dadosDoFormularioObj[i - 1].numero;
+      cepInput.value = dadosDoFormularioObj[i - 1].cep;
+      ufSelect.value = dadosDoFormularioObj[i - 1].uf;
+      escolaridadeSelect.value = dadosDoFormularioObj[i - 1].escolaridade;
+      let j = dadosDoFormularioObj[i - 1].quantidadeDeContatosNesteFormulario;
       for (let k = 1; k < j; k++) {
         adicionarContatoBtn.click();
       }
@@ -249,23 +255,42 @@ submitBtn.addEventListener('click', function (e) {
         let contatoNome = document.getElementById(`contato-nome${p}`);
         let contatoTelefone = document.getElementById(`contato-telefone${p}`);
         let contatoEmail = document.getElementById(`contato-email${p}`);
-        contatoNome.value = dadosDoFormularioObj[i][`nomeContato${p}`];
-        contatoTelefone.value = dadosDoFormularioObj[i][`telefoneContato${p}`];
-        contatoEmail.value = dadosDoFormularioObj[i][`emailContato${p}`];
+        contatoNome.value = dadosDoFormularioObj[i - 1][`nomeContato${p}`];
+        contatoTelefone.value = dadosDoFormularioObj[i - 1][`telefoneContato${p}`];
+        contatoEmail.value = dadosDoFormularioObj[i - 1][`emailContato${p}`];
       }
-      dadosDoFormularioObj.splice(i, 1);
+      dadosDoFormularioObj.splice(i - 1, 1);
       quantidadeDeFormulariosEnviados--;
       quantidadeDeFormulariosNaTabela--;
 
       let itensTabela = document.querySelectorAll('.table-item');
-      for (let w = i * 4; w < itensTabela.length; w++) {
+      for (let w = i * 4 - 4, k = 1; w < itensTabela.length; w++, k++) {
         let classes = itensTabela[w].className;
         let numeroReferencia = classes.match(/(\d+)/)[0];
         itensTabela[w].classList.remove(`ref${numeroReferencia}`);
         itensTabela[w].classList.add(`ref${numeroReferencia - 1}`);
+        if (k === 4) {
+          k = 0;
+          itensTabela[w].innerHTML = `
+          <button class="editar ações-btn" id="${numeroReferencia - 1}">Editar</button>
+          <button class="excluir ações-btn" id="${numeroReferencia - 1}">Excluir</button>
+          `;
+        }
       }
-      editarBtn[editarBtn.length - 1].removeEventListener('click', funçãoEditar);
+
+      recolocarEventListeners(i);
     };
+
+    function recolocarEventListeners(i) {
+      excluirBtn = document.querySelectorAll('.excluir');
+      editarBtn = document.querySelectorAll('.editar');
+      for (let a = i - 1; a < excluirBtn.length; a++) {
+        excluirBtn[a].addEventListener('click', funçãoRemover);
+        editarBtn[a].addEventListener('click', funçãoEditar);
+      }
+    }
+
+    excluirBtn[excluirBtn.length - 1].addEventListener('click', funçãoRemover);
     editarBtn[editarBtn.length - 1].addEventListener('click', funçãoEditar);
   }
 });
